@@ -1,0 +1,109 @@
+package week9workshop.bankaccountsystem;
+
+
+/**
+ * Write a description of class bankaccount here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class BankAccount {
+    int accountNumber;
+    String accountHolderName;
+    double balance;
+
+    BankAccount(int accountNumber, String accountHolderName, double balance) {
+        this.accountNumber = accountNumber;
+        this.accountHolderName = accountHolderName;
+        this.balance = balance;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        System.out.println(amount + " deposited. New Balance: " + balance);
+    }
+
+    double getBalance() {
+        return balance;
+    }
+}
+
+
+package week9workshop.bankaccountsystem;
+
+
+/**
+ * Write a description of class savingaccount here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class SavingsAccount extends BankAccount {
+    double interestRate;
+
+    SavingsAccount(int accountNumber, String accountHolderName, double balance, double interestRate) {
+        super(accountNumber, accountHolderName, balance);
+        this.interestRate = interestRate;
+    }
+
+    double calculateInterest() {
+        return super.getBalance() * interestRate / 100;
+    }
+}
+
+package week9workshop.bankaccountsystem;
+
+
+/**
+ * Write a description of class currentaccount here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class CurrentAccount extends BankAccount {
+    double overdraftLimit;
+
+    CurrentAccount(int accountNumber, String accountHolderName, double balance, double overdraftLimit) {
+        super(accountNumber, accountHolderName, balance);
+        this.overdraftLimit = overdraftLimit;
+    }
+
+    boolean withdraw(double amount) {
+        if (amount <= balance + overdraftLimit) {
+            balance -= amount;
+            System.out.println(amount + " withdrawn. New Balance: " + balance);
+            return true;
+        } else {
+            System.out.println("Withdrawal denied! Amount exceeds");
+            return false;
+        }
+    }
+}
+
+
+package week9workshop.bankaccountsystem;
+
+
+/**
+ * Write a description of class bankapp here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class BankApp {
+    public static void main(String[] args) {
+        SavingsAccount sa = new SavingsAccount(101, "Messi", 5000, 5);
+        System.out.println("=== Savings Account ===");
+        sa.deposit(2000);
+        System.out.println("Balance: " + sa.getBalance());
+        System.out.println("Interest: " + sa.calculateInterest());
+
+        System.out.println();
+        CurrentAccount ca = new CurrentAccount(202, "Ronaldo", 3000, 1000);
+        System.out.println("=== Current Account ===");
+        ca.deposit(1500);
+        ca.withdraw(3500);
+        ca.withdraw(2000);  
+        System.out.println("Final Balance: " + ca.getBalance());
+    }
+}
